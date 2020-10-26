@@ -1,4 +1,4 @@
-package com.github.kimcore.koreanbots.listeners
+package com.github.kimcore.koreanbots.jda
 
 import com.github.kimcore.koreanbots.KoreanbotsClient
 import net.dv8tion.jda.api.JDA

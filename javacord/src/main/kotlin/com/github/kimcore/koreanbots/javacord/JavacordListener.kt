@@ -1,7 +1,6 @@
-package com.github.kimcore.koreanbots.listeners
+package com.github.kimcore.koreanbots.javacord
 
 import com.github.kimcore.koreanbots.KoreanbotsClient
-import org.javacord.api.DiscordApi
 import org.javacord.api.event.server.ServerJoinEvent
 import org.javacord.api.event.server.ServerLeaveEvent
 import org.javacord.api.listener.server.ServerJoinListener

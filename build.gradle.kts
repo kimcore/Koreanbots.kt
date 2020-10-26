@@ -1,51 +1,35 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.10" apply false
 }
 
-group = "com.github.kimcore.koreanbots"
-version = "1.0"
-
-repositories {
-    mavenCentral()
-    jcenter()
-    maven("https://dl.bintray.com/kordlib/Kord")
-}
-
-dependencies {
-    // Kotlin
-    implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", "1.3.8")
-
-    // JDA
-    implementation ("net.dv8tion", "JDA", "4.2.0_209") {
-        exclude(module = "opus-java")
+subprojects {
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
     }
 
-    // Kord
-    implementation("com.gitlab.kordlib.kord", "kord-core", "0.6.3")
+    group = "com.github.kimcore.koreanbots"
+    version = "1.0"
 
-    // Javacord
-    implementation("org.javacord", "javacord", "3.1.1")
-
-    // Discord4J
-    implementation("com.discord4j", "discord4j-core", "3.1.1")
-}
-
-tasks {
-    compileKotlin {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
-
-        kotlinOptions {
-            jvmTarget ="1.8"
-        }
+    repositories {
+        mavenCentral()
+        jcenter()
     }
-    compileTestKotlin {
+
+    val implementation by configurations
+
+    dependencies {
+        // Kotlin
+        implementation(kotlin("stdlib"))
+        implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", "1.3.8")
+    }
+
+    tasks.withType(KotlinCompile::class) {
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
-
         kotlinOptions {
-            jvmTarget ="1.8"
+            jvmTarget = "1.8"
         }
     }
 }
