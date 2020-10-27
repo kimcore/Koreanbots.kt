@@ -1,7 +1,7 @@
 package com.github.kimcore.koreanbots.jda
 
 import com.github.kimcore.koreanbots.KoreanbotsClient
-import com.github.kimcore.koreanbots.entities.internal.Strategy
+import com.github.kimcore.koreanbots.entities.internal.Mode
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.sharding.ShardManager
 
@@ -11,17 +11,19 @@ class JDAKoreanbotsClient private constructor(
     addListener: (client: KoreanbotsClient) -> JDAListener,
     private val removeListener: (listener: JDAListener?) -> Unit,
     token: String,
-    strategy: Strategy,
-    intervalMinutes: Int
-) : KoreanbotsClient(token, strategy, intervalMinutes) {
+    mode: Mode,
+    intervalMinutes: Int,
+    useV2: Boolean
+) : KoreanbotsClient(token, mode, intervalMinutes, useV2) {
     private var listener: JDAListener? = null
 
     companion object {
         fun KoreanbotsClient.Companion.create(
             jda: JDA,
             token: String,
-            strategy: Strategy = Strategy.LISTENER,
-            intervalMinutes: Int = 10
+            mode: Mode = Mode.LISTENER,
+            intervalMinutes: Int = 10,
+            useV2: Boolean = false
         ): JDAKoreanbotsClient {
             return JDAKoreanbotsClient(
                 { jda.shardManager?.guilds?.size ?: jda.guilds.size },
@@ -32,16 +34,18 @@ class JDAKoreanbotsClient private constructor(
                 },
                 { jda.removeEventListener(it) },
                 token,
-                strategy,
-                intervalMinutes
+                mode,
+                intervalMinutes,
+                useV2
             )
         }
 
         fun KoreanbotsClient.Companion.create(
             shardManager: ShardManager,
             token: String,
-            strategy: Strategy = Strategy.LISTENER,
-            intervalMinutes: Int = 10
+            mode: Mode = Mode.LISTENER,
+            intervalMinutes: Int = 10,
+            useV2: Boolean = false
         ): JDAKoreanbotsClient {
             return JDAKoreanbotsClient(
                 { shardManager.guilds.size },
@@ -52,16 +56,17 @@ class JDAKoreanbotsClient private constructor(
                 },
                 { shardManager.removeEventListener(it) },
                 token,
-                strategy,
-                intervalMinutes
+                mode,
+                intervalMinutes,
+                useV2
             )
         }
     }
 
     init {
-        when (strategy) {
-            Strategy.LISTENER -> listener = addListener(this)
-            Strategy.LOOP -> startLoop(serversProvider)
+        when (mode) {
+            Mode.LISTENER -> listener = addListener(this)
+            Mode.LOOP -> startLoop(serversProvider)
         }
         shutdownChild = { removeListener(listener) }
     }

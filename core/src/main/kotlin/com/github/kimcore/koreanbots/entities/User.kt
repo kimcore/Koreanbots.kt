@@ -2,6 +2,7 @@ package com.github.kimcore.koreanbots.entities
 
 import kotlin.collections.List
 
+@Suppress("unused")
 data class User(
     val id: String,
     val avatar: String?,

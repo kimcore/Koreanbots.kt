@@ -1,7 +1,7 @@
 package com.github.kimcore.koreanbots.discord4j
 
 import com.github.kimcore.koreanbots.KoreanbotsClient
-import com.github.kimcore.koreanbots.entities.internal.Strategy
+import com.github.kimcore.koreanbots.entities.internal.Mode
 import discord4j.core.GatewayDiscordClient
 import discord4j.core.event.domain.guild.GuildCreateEvent
 import discord4j.core.event.domain.guild.GuildDeleteEvent
@@ -13,23 +13,24 @@ import java.util.concurrent.CompletableFuture
 
 @Suppress("unused")
 class Discord4JKoreanbotsClient(
-    gatewayDiscordClient: GatewayDiscordClient, token: String, strategy: Strategy, intervalMinutes: Int
-) : KoreanbotsClient(token, strategy, intervalMinutes) {
+    gatewayDiscordClient: GatewayDiscordClient, token: String, mode: Mode, intervalMinutes: Int, useV2: Boolean
+) : KoreanbotsClient(token, mode, intervalMinutes, useV2) {
     companion object {
         fun KoreanbotsClient.Companion.create(
             gatewayDiscordClient: GatewayDiscordClient,
             token: String,
-            strategy: Strategy = Strategy.LISTENER,
-            intervalMinutes: Int = 10
+            mode: Mode = Mode.LISTENER,
+            intervalMinutes: Int = 10,
+            useV2: Boolean = false
         ): Discord4JKoreanbotsClient {
-            return Discord4JKoreanbotsClient(gatewayDiscordClient, token, strategy, intervalMinutes)
+            return Discord4JKoreanbotsClient(gatewayDiscordClient, token, mode, intervalMinutes, useV2)
         }
     }
 
     init {
-        when (strategy) {
-            Strategy.LISTENER -> addListener(gatewayDiscordClient)
-            Strategy.LOOP -> startLoop { gatewayDiscordClient.guilds.count().await() }
+        when (mode) {
+            Mode.LISTENER -> addListener(gatewayDiscordClient)
+            Mode.LOOP -> startLoop { gatewayDiscordClient.guilds.count().await() }
         }
     }
 

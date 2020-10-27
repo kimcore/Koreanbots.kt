@@ -16,6 +16,12 @@ dependencies {
     // HTTP
     implementation("com.github.kittinunf.fuel", "fuel", "2.2.3")
     implementation("com.github.kittinunf.fuel", "fuel-coroutines", "2.2.3")
+
+    // Logging
+    implementation("org.slf4j", "slf4j-api", "1.7.30")
+
+    // Util
+    implementation("com.google.code.gson", "gson", "2.8.6")
 }
 
 

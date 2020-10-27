@@ -2,6 +2,7 @@ package com.github.kimcore.koreanbots.entities
 
 import kotlin.collections.List
 
+@Suppress("unused")
 data class SubmittedBot(
     val id: String,
     val date: Long,

@@ -1,30 +1,31 @@
 package com.github.kimcore.koreanbots.catnip
 
 import com.github.kimcore.koreanbots.KoreanbotsClient
-import com.github.kimcore.koreanbots.entities.internal.Strategy
+import com.github.kimcore.koreanbots.entities.internal.Mode
 import com.mewna.catnip.Catnip
 import com.mewna.catnip.entity.guild.Guild
 import com.mewna.catnip.shard.DiscordEvent
 
 @Suppress("unused")
 class CatnipKoreanbotsClient(
-    catnip: Catnip, token: String, strategy: Strategy, intervalMinutes: Int
-) : KoreanbotsClient(token, strategy, intervalMinutes) {
+    catnip: Catnip, token: String, mode: Mode, intervalMinutes: Int, useV2: Boolean
+) : KoreanbotsClient(token, mode, intervalMinutes, useV2) {
     companion object {
         fun KoreanbotsClient.Companion.create(
             catnip: Catnip,
             token: String,
-            strategy: Strategy = Strategy.LISTENER,
-            intervalMinutes: Int = 10
+            mode: Mode = Mode.LISTENER,
+            intervalMinutes: Int = 10,
+            useV2: Boolean = false
         ): CatnipKoreanbotsClient {
-            return CatnipKoreanbotsClient(catnip, token, strategy, intervalMinutes)
+            return CatnipKoreanbotsClient(catnip, token, mode, intervalMinutes, useV2)
         }
     }
 
     init {
-        when (strategy) {
-            Strategy.LISTENER -> addListener(catnip)
-            Strategy.LOOP -> startLoop { catnip.cache().guilds().size().toInt() }
+        when (mode) {
+            Mode.LISTENER -> addListener(catnip)
+            Mode.LOOP -> startLoop { catnip.cache().guilds().size().toInt() }
         }
     }
 

@@ -1,0 +1,3 @@
+mutation UpdateServers($servers: Int) {
+    bot(servers: $servers) {id, servers}
+}

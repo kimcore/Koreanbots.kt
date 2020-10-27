@@ -1,6 +1,6 @@
 package com.github.kimcore.koreanbots.entities.internal
 
-enum class Strategy {
+enum class Mode {
     LOOP,
     LISTENER
 }

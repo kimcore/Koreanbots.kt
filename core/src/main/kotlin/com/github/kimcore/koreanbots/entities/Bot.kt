@@ -4,6 +4,7 @@ import com.github.kimcore.koreanbots.entities.enums.BotState
 import com.github.kimcore.koreanbots.entities.enums.Status
 import kotlin.collections.List
 
+@Suppress("unused")
 data class Bot(
     val id: String,
     val lib: String,

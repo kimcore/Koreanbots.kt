@@ -2,6 +2,7 @@ package com.github.kimcore.koreanbots.entities
 
 import com.github.kimcore.koreanbots.entities.enums.ReportedType
 
+@Suppress("unused")
 data class Report(
     val id: Int,
     val issuer: User,
