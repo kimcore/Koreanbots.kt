@@ -2,6 +2,7 @@ package com.github.kimcore.koreanbots.entities
 
 import com.github.kimcore.koreanbots.entities.enums.BotState
 import com.github.kimcore.koreanbots.entities.enums.Status
+import com.google.gson.annotations.SerializedName
 import kotlin.collections.List
 
 @Suppress("unused")

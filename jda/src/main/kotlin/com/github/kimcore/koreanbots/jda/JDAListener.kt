@@ -20,6 +20,6 @@ internal class JDAListener(private val client: KoreanbotsClient) : ListenerAdapt
         } else {
             jda.guilds
         }.size
-        client.updateServersCount(servers)
+        client.updateServers(servers)
     }
 }

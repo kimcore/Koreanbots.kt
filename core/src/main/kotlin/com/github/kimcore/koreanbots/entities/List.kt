@@ -1,7 +1,7 @@
 package com.github.kimcore.koreanbots.entities
 
-import com.github.kimcore.koreanbots.entities.enums.ListType
 import kotlin.collections.List
+import com.github.kimcore.koreanbots.entities.enums.ListType
 
 @Suppress("unused")
 data class List(

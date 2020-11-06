@@ -14,18 +14,16 @@ class KordKoreanbotsClient(
     kord: Kord,
     token: String,
     mode: Mode,
-    intervalMinutes: Int,
-    useV2: Boolean
-) : KoreanbotsClient(token, mode, intervalMinutes, useV2) {
+    intervalMinutes: Int
+) : KoreanbotsClient(token, mode, intervalMinutes) {
     companion object {
         fun KoreanbotsClient.Companion.create(
             kord: Kord,
             token: String,
             mode: Mode = Mode.LISTENER,
-            intervalMinutes: Int = 10,
-            useV2: Boolean = false
+            intervalMinutes: Int = 10
         ): KordKoreanbotsClient {
-            return KordKoreanbotsClient(kord, token, mode, intervalMinutes, useV2)
+            return KordKoreanbotsClient(kord, token, mode, intervalMinutes)
         }
     }
 
@@ -33,6 +31,8 @@ class KordKoreanbotsClient(
         when (mode) {
             Mode.LISTENER -> addListener(kord)
             Mode.LOOP -> startLoop { kord.guilds.count() }
+            Mode.NONE -> {
+            }
         }
     }
 
@@ -49,7 +49,7 @@ class KordKoreanbotsClient(
             }
             if (!updatable) return
 
-            updateServersCount(servers)
+            updateServers(servers)
         }
 
         kord.on<GuildCreateEvent> {
@@ -62,7 +62,7 @@ class KordKoreanbotsClient(
 
         kord.on<ReadyEvent> {
             initialServers = this.guildIds.size
-            updateServersCount(initialServers)
+            updateServers(initialServers)
         }
     }
 }

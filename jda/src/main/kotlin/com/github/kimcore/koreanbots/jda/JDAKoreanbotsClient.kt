@@ -12,9 +12,8 @@ class JDAKoreanbotsClient private constructor(
     private val removeListener: (listener: JDAListener?) -> Unit,
     token: String,
     mode: Mode,
-    intervalMinutes: Int,
-    useV2: Boolean
-) : KoreanbotsClient(token, mode, intervalMinutes, useV2) {
+    intervalMinutes: Int
+) : KoreanbotsClient(token, mode, intervalMinutes) {
     private var listener: JDAListener? = null
 
     companion object {
@@ -22,8 +21,7 @@ class JDAKoreanbotsClient private constructor(
             jda: JDA,
             token: String,
             mode: Mode = Mode.LISTENER,
-            intervalMinutes: Int = 10,
-            useV2: Boolean = false
+            intervalMinutes: Int = 10
         ): JDAKoreanbotsClient {
             return JDAKoreanbotsClient(
                 { jda.shardManager?.guilds?.size ?: jda.guilds.size },
@@ -35,8 +33,7 @@ class JDAKoreanbotsClient private constructor(
                 { jda.removeEventListener(it) },
                 token,
                 mode,
-                intervalMinutes,
-                useV2
+                intervalMinutes
             )
         }
 
@@ -44,8 +41,7 @@ class JDAKoreanbotsClient private constructor(
             shardManager: ShardManager,
             token: String,
             mode: Mode = Mode.LISTENER,
-            intervalMinutes: Int = 10,
-            useV2: Boolean = false
+            intervalMinutes: Int = 10
         ): JDAKoreanbotsClient {
             return JDAKoreanbotsClient(
                 { shardManager.guilds.size },
@@ -57,8 +53,7 @@ class JDAKoreanbotsClient private constructor(
                 { shardManager.removeEventListener(it) },
                 token,
                 mode,
-                intervalMinutes,
-                useV2
+                intervalMinutes
             )
         }
     }
@@ -67,6 +62,8 @@ class JDAKoreanbotsClient private constructor(
         when (mode) {
             Mode.LISTENER -> listener = addListener(this)
             Mode.LOOP -> startLoop(serversProvider)
+            Mode.NONE -> {
+            }
         }
         shutdownChild = { removeListener(listener) }
     }

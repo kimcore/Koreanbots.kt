@@ -9,11 +9,11 @@ import org.javacord.api.listener.server.ServerLeaveListener
 internal class JavacordListener(private val client: KoreanbotsClient) : ServerJoinListener, ServerLeaveListener {
     override fun onServerJoin(event: ServerJoinEvent?) {
         val servers = event!!.api.servers.size
-        client.updateServersCount(servers)
+        client.updateServers(servers)
     }
 
     override fun onServerLeave(event: ServerLeaveEvent?) {
         val servers = event!!.api.servers.filter { it != event.server }.size
-        client.updateServersCount(servers)
+        client.updateServers(servers)
     }
 }

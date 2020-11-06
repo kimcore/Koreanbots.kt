@@ -6,8 +6,8 @@ import org.javacord.api.DiscordApi
 
 @Suppress("unused")
 class JavacordKoreanbotsClient(
-    private val discordApi: DiscordApi, token: String, mode: Mode, intervalMinutes: Int, useV2: Boolean
-) : KoreanbotsClient(token, mode, intervalMinutes, useV2) {
+    private val discordApi: DiscordApi, token: String, mode: Mode, intervalMinutes: Int
+) : KoreanbotsClient(token, mode, intervalMinutes) {
     private var listener: JavacordListener? = null
 
     companion object {
@@ -15,10 +15,9 @@ class JavacordKoreanbotsClient(
             discordApi: DiscordApi,
             token: String,
             mode: Mode = Mode.LISTENER,
-            intervalMinutes: Int = 10,
-            useV2: Boolean = false
+            intervalMinutes: Int = 10
         ): JavacordKoreanbotsClient {
-            return JavacordKoreanbotsClient(discordApi, token, mode, intervalMinutes, useV2)
+            return JavacordKoreanbotsClient(discordApi, token, mode, intervalMinutes)
         }
     }
 
@@ -26,6 +25,8 @@ class JavacordKoreanbotsClient(
         when (mode) {
             Mode.LISTENER -> addListener()
             Mode.LOOP -> startLoop { discordApi.servers.size }
+            Mode.NONE -> {
+            }
         }
         shutdownChild = { discordApi.removeListener(listener) }
     }
@@ -33,6 +34,6 @@ class JavacordKoreanbotsClient(
     private fun addListener() {
         listener = JavacordListener(this)
         discordApi.addListener(listener)
-        updateServersCount(discordApi.servers.size)
+        updateServers(discordApi.servers.size)
     }
 }

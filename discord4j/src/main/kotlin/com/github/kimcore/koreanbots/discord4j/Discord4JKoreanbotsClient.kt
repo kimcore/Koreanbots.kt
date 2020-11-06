@@ -13,17 +13,16 @@ import java.util.concurrent.CompletableFuture
 
 @Suppress("unused")
 class Discord4JKoreanbotsClient(
-    gatewayDiscordClient: GatewayDiscordClient, token: String, mode: Mode, intervalMinutes: Int, useV2: Boolean
-) : KoreanbotsClient(token, mode, intervalMinutes, useV2) {
+    gatewayDiscordClient: GatewayDiscordClient, token: String, mode: Mode, intervalMinutes: Int
+) : KoreanbotsClient(token, mode, intervalMinutes) {
     companion object {
         fun KoreanbotsClient.Companion.create(
             gatewayDiscordClient: GatewayDiscordClient,
             token: String,
             mode: Mode = Mode.LISTENER,
-            intervalMinutes: Int = 10,
-            useV2: Boolean = false
+            intervalMinutes: Int = 10
         ): Discord4JKoreanbotsClient {
-            return Discord4JKoreanbotsClient(gatewayDiscordClient, token, mode, intervalMinutes, useV2)
+            return Discord4JKoreanbotsClient(gatewayDiscordClient, token, mode, intervalMinutes)
         }
     }
 
@@ -31,6 +30,8 @@ class Discord4JKoreanbotsClient(
         when (mode) {
             Mode.LISTENER -> addListener(gatewayDiscordClient)
             Mode.LOOP -> startLoop { gatewayDiscordClient.guilds.count().await() }
+            Mode.NONE -> {
+            }
         }
     }
 
@@ -49,12 +50,12 @@ class Discord4JKoreanbotsClient(
             }
             if (!updatable) return
 
-            updateServersCount(servers)
+            updateServers(servers)
         }
 
         gatewayDiscordClient.on(ReadyEvent::class.java).subscribe {
             initialServers = it.guilds.size
-            updateServersCount(initialServers)
+            updateServers(initialServers)
             gatewayDiscordClient.on(GuildCreateEvent::class.java).subscribe { event -> handle(event) }
             gatewayDiscordClient.on(GuildDeleteEvent::class.java).subscribe { event -> handle(event) }
         }

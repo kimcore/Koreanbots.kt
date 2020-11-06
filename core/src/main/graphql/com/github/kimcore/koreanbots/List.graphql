@@ -1,0 +1,43 @@
+query List($type: ListType!, $page: Int, $query: String) {
+    list(type: $type, page: $page, query: $query) {
+        data {
+            id
+            lib
+            prefix
+            name
+            servers
+            votes
+            intro
+            desc
+            avatar
+            url
+            web
+            git
+            category
+            tag
+            discord
+            state
+            verified
+            trusted
+            boosted
+            partnered
+            vanity
+            banner
+            status
+            bg
+            owners {
+                id
+                avatar
+                tag
+                username
+                perm
+                github
+                bots {
+                    id
+                }
+            }
+        }
+        currentPage
+        totalPage
+    }
+}
