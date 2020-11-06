@@ -5,8 +5,10 @@ import com.apollographql.apollo.api.toInput
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.github.kimcore.koreanbots.entities.Bot
-import com.github.kimcore.koreanbots.entities.List
+import com.github.kimcore.koreanbots.entities.Report
+import com.github.kimcore.koreanbots.entities.List as BotList
 import com.github.kimcore.koreanbots.entities.SubmittedBot
+import com.github.kimcore.koreanbots.entities.User
 import com.github.kimcore.koreanbots.type.ListType as GraphQLListType
 import com.github.kimcore.koreanbots.entities.enums.ListType
 import com.github.kimcore.koreanbots.entities.internal.Mode
@@ -69,22 +71,87 @@ abstract class KoreanbotsClient(
         return gson.fromJson(gson.toJson(response.data!!.bot), Bot::class.java)
     }
 
-//    suspend fun getSubmittedBot(id: String, date: Int): SubmittedBot? {
-//        val response = apolloClient.query(
-//            ListQuery(GraphQLListType.valueOf(listType.name), page.toInput(), query.toInput())
-//        ).await()
-//        if (response.data == null) return null
-//        val gson = Gson()
-//        return gson.fromJson(gson.toJson(response.data!!.list), List::class.java)
-//    }
+    suspend fun getSubmittedBot(id: String, date: Int): SubmittedBot? {
+        val response = apolloClient.query(
+            SubmittedBotQuery(id, date)
+        ).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return gson.fromJson(gson.toJson(response.data!!.submit), SubmittedBot::class.java)
+    }
 
-    suspend fun getList(listType: ListType, page: Int, query: String): List? {
+    suspend fun getSubmits(): List<SubmittedBot>? {
+        val response = apolloClient.query(SubmitsQuery()).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return response.data!!.submits!!.map {
+            gson.fromJson(gson.toJson(it), SubmittedBot::class.java)
+        }
+    }
+
+    suspend fun getReport(id: String): Report? {
+        val response = apolloClient.query(ReportQuery(id)).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return gson.fromJson(gson.toJson(response.data!!.report), Report::class.java)
+    }
+
+    suspend fun getReports(): List<Report>? {
+        val response = apolloClient.query(ReportsQuery()).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return response.data!!.reports!!.map {
+            gson.fromJson(gson.toJson(it), Report::class.java)
+        }
+    }
+
+    suspend fun getStars(): List<Bot>? {
+        val response = apolloClient.query(StarsQuery()).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return response.data!!.stars.map {
+            gson.fromJson(gson.toJson(it), Bot::class.java)
+        }
+    }
+
+    suspend fun getUser(id: String): User? {
+        val response = apolloClient.query(UserQuery(id)).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return gson.fromJson(gson.toJson(response.data!!.user), User::class.java)
+    }
+
+    suspend fun getList(listType: ListType, page: Int?, query: String?): BotList? {
         val response = apolloClient.query(
             ListQuery(GraphQLListType.valueOf(listType.name), page.toInput(), query.toInput())
         ).await()
         if (response.data == null) return null
         val gson = Gson()
-        return gson.fromJson(gson.toJson(response.data!!.list), List::class.java)
+        return gson.fromJson(gson.toJson(response.data!!.list), BotList::class.java)
+    }
+
+    suspend fun search(query: String, limit: Int?): List<Bot>? {
+        val response = apolloClient.query(
+            SearchQuery(query, limit.toInput())
+        ).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return response.data!!.search!!.map {
+            gson.fromJson(gson.toJson(it), Bot::class.java)
+        }
+    }
+
+    suspend fun getToken(id: String): String? {
+        val response = apolloClient.query(TokenQuery(id)).await()
+        if (response.data == null) return null
+        return response.data!!.token
+    }
+
+    suspend fun me(): User? {
+        val response = apolloClient.query(MeQuery()).await()
+        if (response.data == null) return null
+        val gson = Gson()
+        return gson.fromJson(gson.toJson(response.data!!.me), User::class.java)
     }
 
     fun stopLoop() {
