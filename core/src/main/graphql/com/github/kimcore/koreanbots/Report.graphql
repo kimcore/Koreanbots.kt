@@ -1,0 +1,58 @@
+query Report($id: String!) {
+    report(id: $id) {
+        id
+        issuer {
+            id
+            avatar
+            tag
+            username
+            perm
+            github
+            bots {
+                id
+            }
+        }
+        type
+        reported
+        bot {
+            id
+            lib
+            prefix
+            votes
+            servers
+            intro
+            desc
+            web
+            git
+            url
+            category
+            status
+            name
+            avatar
+            tag
+            verified
+            trusted
+            partnered
+            discord
+            boosted
+            state
+            vanity
+            bg
+            banner
+            owners {
+                id
+                avatar
+                tag
+                username
+                perm
+                github
+                bots {
+                    id
+                }
+            }
+        }
+        state
+        category
+        desc
+    }
+}

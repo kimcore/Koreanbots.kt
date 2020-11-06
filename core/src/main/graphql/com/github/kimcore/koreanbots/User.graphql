@@ -1,0 +1,13 @@
+query User($id: String!) {
+    user(id: $id) {
+        id
+        avatar
+        tag
+        username
+        perm
+        github
+        bots {
+            id
+        }
+    }
+}

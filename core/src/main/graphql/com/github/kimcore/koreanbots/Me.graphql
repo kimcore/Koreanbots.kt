@@ -1,0 +1,13 @@
+query Me {
+    me {
+        id
+        avatar
+        tag
+        username
+        perm
+        github
+        bots {
+            id
+        }
+    }
+}

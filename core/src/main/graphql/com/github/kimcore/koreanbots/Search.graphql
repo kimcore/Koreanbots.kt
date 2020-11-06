@@ -1,5 +1,5 @@
-query Bot($id: String!) {
-    bot(id: $id) {
+query Search($query: String!, $limit: Int) {
+    search(query: $query, limit: $limit) {
         id
         lib
         prefix

@@ -1,29 +1,17 @@
-query Bot($id: String!) {
-    bot(id: $id) {
+query Submits {
+    submits {
         id
+        date
+        category
         lib
         prefix
-        votes
-        servers
         intro
         desc
+        url
         web
         git
-        url
-        category
-        status
-        name
-        avatar
-        tag
-        verified
-        trusted
-        partnered
         discord
-        boosted
         state
-        vanity
-        bg
-        banner
         owners {
             id
             avatar
@@ -35,5 +23,6 @@ query Bot($id: String!) {
                 id
             }
         }
+        reason
     }
 }

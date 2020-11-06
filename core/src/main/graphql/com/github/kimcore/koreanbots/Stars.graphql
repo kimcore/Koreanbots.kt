@@ -1,5 +1,5 @@
-query Bot($id: String!) {
-    bot(id: $id) {
+query Stars {
+    stars {
         id
         lib
         prefix

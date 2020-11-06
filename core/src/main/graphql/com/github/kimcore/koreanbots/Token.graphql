@@ -1,0 +1,3 @@
+query Token($id: String!) {
+    token(id: $id)
+}
